@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-export const EditDoForm = ({editTodo, task}) => {
+export const EditToDoForm = ({editTodo, task}) => {
     const [value, setValue] = useState(task.task)
 
     const handleSubmit = e => {
