@@ -22,7 +22,6 @@ export const ToDoWrapper = () => {
     }
     return [];
   });
-  const [isEditing, setIsEditing] = useState(false)
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -102,7 +101,6 @@ export const ToDoWrapper = () => {
 
   const editTodo = async(id) => {
     try {
-      setIsEditing(true)
       const todoToEdit = todoArray.find((todoObject) => todoObject.id === id);
       if (!todoToEdit) return;
   
@@ -133,7 +131,6 @@ export const ToDoWrapper = () => {
             : todoObject
         )
       );
-      setIsEditing(false)
     } catch (e) {
       console.error("Error updating document:", e);
     }
@@ -153,7 +150,7 @@ export const ToDoWrapper = () => {
       <h1>Get Things Done!</h1>
       <ToDoForm addTodo={addTodo} />
       {todoArray.map((todoObject) =>
-        isEditing ? (
+        todoObject.isEditing ? (
           <EditToDoForm editTodo={editTask} task={todoObject} key={todoObject.id} />
         ) : (
           <ToDo
