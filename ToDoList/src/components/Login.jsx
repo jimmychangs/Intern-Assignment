@@ -1,27 +1,53 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth, onAuthStateChanged} from 'firebase/https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
-
-
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { doSignInWithEmailAndPassword, doSignInWithGoogle} from './firebase/auth';
+import { useAuth } from '../contexts/authContext';
 
-const firebaseApp = initializeApp({
-    apiKey: "AIzaSyAXBNZHjg9oYLgF17QcGKiyZjWo8WQ7Wi8",
-    authDomain: "todo-app-49951.firebaseapp.com",
-    projectId: "todo-app-49951",
-    storageBucket: "todo-app-49951.firebasestorage.app",
-    messagingSenderId: "837432862852",
-    appId: "1:837432862852:web:79d16b837abff362bd7ad1",
-    measurementId: "G-WZ6XM4HRMG"
-});
+export const Login = () => {
+    const { userLoggedIn } = useAuth()
 
-const auth = getAuth(firebaseApp);
+    const[email, setEmail] = useState('')
+    const[password, setPassword] = useState('')
+    const[isSigningIn, setIsSigningIn] = useState(false)
+    const[errorMessage, setErrorMessage] = useState('')
+    const navigate = useNavigate()
 
-
-// Detect auth state
-onAuthStateChanged(auth, user => {
-    if(user !== null) {
-        console.log('Logged in');
-    } else{
-        console.log('No user');
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        if(!isSigningIn) {
+            setIsSigningIn(true);
+            await doSignInWithEmailAndPassword(email, password)
+            navigate('/todos')
+        }
+        
     }
-    });
+
+    const onGoogleSignIn = (e) => {
+        e.preventDefault()
+        if(!isSigningIn) {
+            setIsSigningIn(true)
+            doSignInWithGoogle().catch(err => {
+                setIsSigningIn(false)
+            })
+            setIsSigningIn(false)
+        }
+    }
+    return (
+      <div>
+        {/* {userLoggedIn &&  (<Link to={"./todos"}/>)} */}
+        <div className="signup-header">
+            <h1>Login</h1>
+        </div>
+      <form className="signup-form" onSubmit={onSubmit}>
+      <input type="text" className="email-input" value={email} placeholder="email" onChange={(e) => setEmail(e.target.value)}></input>
+      <input type="password" className="password-input" value={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)}></input>
+      <button type="submit" className="signup-btn">Submit</button>
+      <button className="signup-btn">
+          <Link to={'/signup'}>
+          Sign Up
+          </Link>
+        </button>
+  </form>
+      </div>
+    )
+  }
