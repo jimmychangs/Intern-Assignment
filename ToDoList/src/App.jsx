@@ -13,7 +13,6 @@ import { ToDoWrapper } from './components/ToDoWrapper';
 import { AuthProvider } from './contexts/authContext';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <AuthProvider>
