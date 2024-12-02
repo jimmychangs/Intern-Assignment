@@ -4,7 +4,7 @@ import { doSignInWithEmailAndPassword, doSignInWithGoogle} from './firebase/auth
 import { useAuth } from '../contexts/authContext';
 
 export const Login = () => {
-    const { userLoggedIn } = useAuth()
+    const { userLoggedIn, setUserLoggedIn } = useAuth(false)
 
     const[email, setEmail] = useState('')
     const[password, setPassword] = useState('')

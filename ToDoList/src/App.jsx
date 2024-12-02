@@ -4,6 +4,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  Navigate,
   Link 
 } from "react-router-dom";
 import { Login } from './components/Login';
@@ -20,6 +21,7 @@ function App() {
     <Router>
     {/* <div className="App"> */}
         <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/Login" element={<Login/>}/>
 
         <Route path="/Signup" element={<Signup/>}/>
